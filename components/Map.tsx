@@ -1,8 +1,16 @@
 import {Text, View} from "react-native";
+import MapView, {PROVIDER_DEFAULT} from "react-native-maps";
 
 const Map = () => {
     return (
-        <Text>Map</Text>
+        <MapView
+            provider={PROVIDER_DEFAULT}
+            className="w-full h-full rounded-2xl"
+        >
+
+
+            <Text>Map</Text>
+        </MapView>
     )
 }
 
