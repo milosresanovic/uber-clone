@@ -1,10 +1,14 @@
-import {View, Text, FlatList, Image, ActivityIndicator, TouchableOpacity} from "react-native";
+import {View, Text, FlatList, Image, ActivityIndicator, TouchableOpacity, Animated} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RideCard from "@/components/Ride";
 import {icons, images} from "@/constants";
+import * as Location from "expo-location";
 import {Google} from "@expo/config-plugins/build/ios";
 import GoogleTextInput from "@/components/GoogleTextInput";
 import Map from "@/components/Map";
+import {useLocationStore} from "@/store";
+import {useEffect, useState} from "react";
+import add = Animated.add;
 
 const recentRides = [
     {
@@ -200,12 +204,40 @@ const recentRides = [
         }
     }
 ]
-const loading = false;
-
-const handleSignOut = () => {};
-const handleDestinationPress = () => {};
 
 const Home = () => {
+
+    const loading = false;
+    const {setUserLocation, setDestinationLocation} = useLocationStore();
+    const [hasPermissions, setHasPermission] = useState(false);
+
+
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== "granted") {
+                setHasPermission(false);
+                return;
+            }
+
+            let location = await Location.getCurrentPositionAsync({});
+
+            const address = await Location.reverseGeocodeAsync({
+                latitude: location.coords?.latitude!,
+                longitude: location.coords?.longitude!,
+            });
+
+            setUserLocation({
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+                address: `${address[0].name}, ${address[0].region}`,
+            });
+        })();
+    }, []);
+
+    const handleSignOut = () => {};
+    const handleDestinationPress = () => {};
+
 
     return (
         <SafeAreaView>
@@ -256,7 +288,7 @@ const Home = () => {
                             <Text className="text-xl font-JakartaBold mt-5 b-3">
                                 Your current location
                             </Text>
-                            <View className="flex flex-row items-center bg-transparent w-full h-[300px]">
+                            <View className="flex flex-row items-center bg-red-500 w-full h-[300px]">
                                 <Map />
                             </View>
                         </>
