@@ -13,6 +13,8 @@ const RideCard = ({ride: {
     payment_status,
     created_at
 }}: {ride: Ride}) => {
+    console.log(process.env.EXPO_PUBLIC_GEOAPIFY_API_KEY)
+
     return (
         <View className="flex flex-row items-center justify-center bg-white rounded-lg shadow-sm shadow-neutral-300 mb-3">
             <View className="flex flex-col items-center justify-center p-3">
