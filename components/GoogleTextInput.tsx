@@ -22,7 +22,6 @@ const GoogleTextInput = ({
                 placeholder="Search"
                 minLength={2}
                 debounce={200}
-                onFail={(error) => console.log("Google API Error:", error)}
                 styles={{
                     textInputContainer: {
                         alignItems: "center",
@@ -37,7 +36,7 @@ const GoogleTextInput = ({
                             ? textInputBackgroundColor
                             : "white",
                         fontSize: 16,
-                        fontWeight: "600",
+                        fontWeight: "400",
                         marginTop: 5,
                         width: "100%",
                         borderRadius: 200,
@@ -63,7 +62,7 @@ const GoogleTextInput = ({
                 }}
                 query={{
                     key: googlePlacesApiKey,
-                    language: "sr"
+                    language: "en"
                 }}
                 renderLeftButton={() => (
                     <View className="justify-center items-center w-6 h-6">
